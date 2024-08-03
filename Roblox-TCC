@@ -1,0 +1,130 @@
+import robloxpy
+from robloxpy import Client
+import time
+import itertools
+
+# Função para animação RGB no título
+def rgb_animation(text, delay=0.1):
+    colors = ['\033[91m', '\033[92m', '\033[94m', '\033[95m', '\033[96m', '\033[93m']
+    for color in itertools.cycle(colors):
+        print(f'\r{color}{text}', end='')
+        time.sleep(delay)
+
+# Função personalizada para entrada
+def _input(text):
+    print(text, end='')
+    return input()
+
+# Função para obter o cookie da conta
+def get_cookie():
+    return _input('Insira o cookie da conta Roblox: ')
+
+# Função para exibir o ASCII e a introdução
+def display_intro():
+    ascii_art = '''
+████████╗███████╗██████╗ ██████╗ ███████╗███╗   ██╗██╗████████╗
+╚══██╔══╝██╔════╝██╔══██╗██╔══██╗██╔════╝████╗  ██║██║╚══██╔══╝
+   ██║   █████╗  ██████║███████║█████╗  ██╔██╗ ██║██║   ██║   
+   ██║   ██╔══╝  ██╔══██║██╔══██║██╔══╝  ██║╚██╗██║██║   ██║   
+   ██║   ███████╗██║  ██║██║  ██║███████╗██║ ╚████║██║   ██║   
+   ╚═╝   ╚══════╝╚═╝  ╚═╝╚═╝  ╚═╝╚══════╝╚═╝  ╚═══╝╚═╝   ╚═╝   
+'''
+    print(f'\033[93m{ascii_art}\033[0m')
+    print('TERCEIRO COMANDO DA CAPITAL')
+    print('BY; Dkzin')
+    _input('\nPRESSIONE ENTER PARA EXECUTAR...')
+
+# Função para exibir o banner e o ASCII
+def display_banner():
+    banner = '''
+    ███████╗██╗  ██╗██╗  ██╗
+    ██╔════╝██║  ██║██║  ██║
+    █████╗  ███████║███████║
+    ██╔══╝  ██╔══██║██╔══██║
+    ███████╗██║  ██║██║  ██║
+    ╚══════╝╚═╝  ╚═╝╚═╝  ╚═╝
+    '''
+    print(f'\033[91m{banner}\033[0m')
+    print('Feito por: Menor dk 🇾🇪')
+
+# Função para remover todas amizades com atraso
+def remove_all_friends(client):
+    friends = client.get_friends()
+    for friend in friends:
+        try:
+            client.remove_friend(friend.id)
+            print(f'Removido amigo: {friend.username}')
+            time.sleep(1)  # Pausa de 1 segundo para evitar restrições
+        except Exception as e:
+            print(f'Erro ao remover amigo {friend.username}: {e}')
+
+# Função para sair de todos os grupos com atraso
+def leave_all_groups(client):
+    groups = client.get_groups()
+    for group in groups:
+        try:
+            client.leave_group(group.id)
+            print(f'Saiu do grupo: {group.name}')
+            time.sleep(1)  # Pausa de 1 segundo para evitar restrições
+        except Exception as e:
+            print(f'Erro ao sair do grupo {group.name}: {e}')
+
+# Função para remover todos os emblemas com atraso
+def remove_all_badges(client):
+    badges = client.get_badges()
+    for badge in badges:
+        try:
+            client.remove_badge(badge.id)
+            print(f'Removido emblema: {badge.name}')
+            time.sleep(1)  # Pausa de 1 segundo para evitar restrições
+        except Exception as e:
+            print(f'Erro ao remover emblema {badge.name}: {e}')
+
+# Função para configurar o bot
+def setup_configurations():
+    print('Configurações:')
+    mode = _input('Selecione o modo (black/white): ')
+    language = _input('Selecione o idioma (português/inglês): ')
+    return mode, language
+
+def main():
+    display_intro()  # Exibe a introdução com o texto ASCII
+    
+    while True:
+        display_banner()  # Exibe o banner
+        rgb_animation('Bem-vindo ao Bot Roblox', delay=0.1)
+        print('\n')
+        print('[Menu]')
+        print('1 - Remover todas as amizades')
+        print('2 - Sair de todos os grupos')
+        print('3 - Remover todos os emblemas')
+        print('4 - Configurar o bot')
+        print('5 - Sair')
+
+        choice = _input('Escolha uma opção: ')
+
+        if choice in ['1', '2', '3']:
+            cookie = get_cookie()
+            client = Client(cookie)
+
+            if choice == '1':
+                remove_all_friends(client)
+            
+            elif choice == '2':
+                leave_all_groups(client)
+            
+            elif choice == '3':
+                remove_all_badges(client)
+        
+        elif choice == '4':
+            setup_configurations()
+        
+        elif choice == '5':
+            print('Saindo...')
+            break
+        
+        else:
+            print('Opção inválida. Tente novamente.')
+
+if __name__ == '__main__':
+    main()
